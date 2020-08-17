@@ -1,5 +1,3 @@
 {
-    "cSpell.ignoreWords": [
-        "deno"
-    ]
+  "deno.enable": true
 }

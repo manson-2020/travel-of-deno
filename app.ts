@@ -1,6 +1,7 @@
 
 import { MongoClient } from "https://deno.land/x/mongo@v0.9.1/mod.ts";
-import { Application, Router, isHttpError, Status, send, helpers } from "https://deno.land/x/oak/mod.ts";
+import { Application, Router, isHttpError, Status, send, helpers, Context } from "https://deno.land/x/oak/mod.ts";
+import { multiParser } from 'https://deno.land/x/multiparser@v2.0.1/mod.ts';
 
 const client = new MongoClient();
 
@@ -19,48 +20,58 @@ books.set(1, {
 
 const router = new Router();
 router
-    .get("/", (context) => {
-        context.response.body = Deno.readTextFileSync("./test.html");
-    }).
-    get("/params", context => {
-        context.response.body = helpers.getQuery(context, { mergeParams: true });
-    })
-    .get("/user", (context) => {
+    .get("/", (context: any) => {
+        context.response.body = Deno.readTextFileSync("./public/views/test.html");
+    }).get("/user", (context: any) => {
         context.response.redirect(`/params?username=${user.username}&password=${user.password}`);
-    })
-    .get("/error", (context) => {
+    }).get("/error", (context: any) => {
         context.throw(500);
-    })
-    .get("/book", (context) => {
+    }).get("/book", (context: any) => {
         context.response.body = { user, books: Array.from(books.values()) };
-    })
-    .get("/book/:id", (context) => {
+    }).get("/book/:id", (context: any) => {
         if (context.params && context.params.id && books.has(+context.params.id)) {
             context.response.body = books.get(+context.params.id);
         } else {
             context.response.body = 404;
         }
+    }).get("/params", (context: any) => {
+        context.response.body = helpers.getQuery(context, { mergeParams: true });
+    }).post("/", async (context: any) => {
+        try {
+            const { type, value } = context.request.body();
+
+            context.response.body = await (type === "form-data" ? multiParser(context.request.serverRequest) : value);
+
+        } catch (e) {
+            context.response.body = e;
+        }
     });
+
+router.get("/test", context => {
+    context.response.body = "test"
+})
 
 const app = new Application();
 
-app.addEventListener("listen", ({ hostname, port, secure }) => {
+app.addEventListener("listen", ({ hostname, port, secure }: any) => {
     console.log(`Listening on: ${secure ? "https://" : "http://"}${hostname ?? "localhost"}:${port}`);
 });
 
-app.addEventListener("error", (evt) => {
+app.addEventListener("error", (evt: any) => {
     console.log(evt.error);
 });
+
 
 app.use(router.routes());
 app.use(router.allowedMethods());
 
-app.use(async (context, next) => {
+app.use(async (context: any, next: any) => {
+    context.response.headers.set("Access-Control-Allow-Origin", "*");
+    context.response.headers.set("Access-Control-Allow-Methods", "*");
+
+    await next();
     try {
-        await send(context, context.request.url.pathname, {
-            root: `${Deno.cwd()}/`,
-            index: "index.html",
-        });
+        await send(context, context.request.url.pathname, { root: Deno.cwd() });
     } catch (err) {
         if (!isHttpError(err)) {
             context.response.body = "Server exception.";
@@ -76,9 +87,9 @@ app.use(async (context, next) => {
     }
 });
 
+
+
+
 await app.listen({ port: 8000 });
-
-
-
 
 
