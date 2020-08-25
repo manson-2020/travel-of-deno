@@ -1,55 +1,6 @@
 
-import { MongoClient } from "https://deno.land/x/mongo@v0.9.1/mod.ts";
-import { Application, Router, isHttpError, Status, send, helpers, Context } from "https://deno.land/x/oak/mod.ts";
-import { multiParser } from 'https://deno.land/x/multiparser@v2.0.1/mod.ts';
-
-const client = new MongoClient();
-
-client.connectWithUri("mongodb://localhost:27017");
-
-const db = client.database("test");
-const users = db.collection("users");
-const user: any = await users.findOne();
-
-const books = new Map();
-books.set(1, {
-    id: "1",
-    title: "The Hound of the Baskerilles",
-    author: "Conan Doyle, Arthur",
-});
-
-const router = new Router();
-router
-    .get("/", (context: any) => {
-        context.response.body = Deno.readTextFileSync("./public/views/test.html");
-    }).get("/user", (context: any) => {
-        context.response.redirect(`/params?username=${user.username}&password=${user.password}`);
-    }).get("/error", (context: any) => {
-        context.throw(500);
-    }).get("/book", (context: any) => {
-        context.response.body = { user, books: Array.from(books.values()) };
-    }).get("/book/:id", (context: any) => {
-        if (context.params && context.params.id && books.has(+context.params.id)) {
-            context.response.body = books.get(+context.params.id);
-        } else {
-            context.response.body = 404;
-        }
-    }).get("/params", (context: any) => {
-        context.response.body = helpers.getQuery(context, { mergeParams: true });
-    }).post("/", async (context: any) => {
-        try {
-            const { type, value } = context.request.body();
-
-            context.response.body = await (type === "form-data" ? multiParser(context.request.serverRequest) : value);
-
-        } catch (e) {
-            context.response.body = e;
-        }
-    });
-
-router.get("/test", context => {
-    context.response.body = "test"
-})
+import { Application, isHttpError, Status, send } from "https://deno.land/x/oak/mod.ts";
+import router from "./lib/router.ts";
 
 const app = new Application();
 
@@ -68,6 +19,7 @@ app.use(router.allowedMethods());
 app.use(async (context: any, next: any) => {
     context.response.headers.set("Access-Control-Allow-Origin", "*");
     context.response.headers.set("Access-Control-Allow-Methods", "*");
+    context.response.headers.set("Access-Control-Allow-Headers", "*");
 
     await next();
     try {
@@ -86,8 +38,6 @@ app.use(async (context: any, next: any) => {
         }
     }
 });
-
-
 
 
 await app.listen({ port: 8000 });

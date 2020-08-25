@@ -1,11 +1,9 @@
 
 
-import Controller from "./index.ts";
-
-class Index extends Controller {
+class Index {
     test(context: any): void {
         context.response.body = "asd"
     }
 }
 
-export default new Index("index");
+export default new Index;
