@@ -1,0 +1,9 @@
+{
+    "imports": {
+        "view_engine": "https://deno.land/x/view_engine@v1.3.0/mod.ts",
+        "controllers/": "file://C:\/Users\/54594\/Desktop\/deno\/controllers/",
+        "oak": "https://deno.land/x/oak/mod.ts",
+        "multiParser": "https://deno.land/x/multiparser@v2.0.1/mod.ts",
+        "mongo": "https://deno.land/x/mongo@v0.9.1/mod.ts"
+    }
+}

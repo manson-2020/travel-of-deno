@@ -1,6 +1,11 @@
 
-import { Application, isHttpError, Status, send } from "https://deno.land/x/oak/mod.ts";
+import { Application, send, isHttpError, Status } from "oak";
+// import { viewEngine, engineFactory, adapterFactory, } from "view_engine";
+
 import router from "./lib/router.ts";
+
+// const ejsEngine = engineFactory.getEjsEngine();
+// const oakAdapter = adapterFactory.getOakAdapter();
 
 const app = new Application();
 
@@ -12,9 +17,10 @@ app.addEventListener("error", (evt: any) => {
     console.log(evt.error);
 });
 
-
+// app.use(viewEngine(oakAdapter, ejsEngine));
 app.use(router.routes());
 app.use(router.allowedMethods());
+
 
 app.use(async (context: any, next: any) => {
     context.response.headers.set("Access-Control-Allow-Origin", "*");
@@ -41,5 +47,3 @@ app.use(async (context: any, next: any) => {
 
 
 await app.listen({ port: 8000 });
-
-
