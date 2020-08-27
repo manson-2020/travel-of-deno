@@ -4,11 +4,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title><%= title %></title>
 </head>
 
 <body>
-    Hobbies of <%= data.name %>
+    <h1>login</h1>
+    <form action="/user/login" enctype="multipart/form-data" method="post">
+        <% ['username', 'password'].forEach(item => { %>
+        <label>
+            <span><%= item %>:</span>
+            <input type="text" name="<%= item %>">
+        </label>
+        <% }) %>
+        <button>提交</button>
+    </form>
+
 </body>
 
 </html>

@@ -1,10 +1,15 @@
 import { RouterContext, helpers } from "oak";
 import { multiParser } from 'multiParser';
-import { users } from "../models/users.ts";
+import { Users } from "../models/users.ts";
 
 class Index {
-    async test(ctx: RouterContext) {
-        ctx.response.body = await users.find();
+    async index(ctx: any) {
+        ctx.render(`${Deno.cwd()}/views/index.ejs`, { title: "登录" });
+    }
+
+    async login(ctx: RouterContext) {
+        const value: any = await multiParser(ctx.request.serverRequest);
+        console.log(await new Users().getData(value));
     }
 
     async postData(ctx: RouterContext) {

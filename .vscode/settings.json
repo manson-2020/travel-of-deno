@@ -1,7 +1,8 @@
 {
-  "deno.import_map": "import_map.json",
+  "deno.import_map": "package.json",
   "deno.enable": true,
   "cSpell.ignoreWords": [
-    "baskervilles"
+    "baskervilles",
+    "denv"
   ],
 }

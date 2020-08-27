@@ -1,5 +1,6 @@
 {
     "imports": {
+        "denv": "https://deno.land/x/denv@2.0.0/mod.ts",
         "view_engine": "https://deno.land/x/view_engine@v1.3.0/mod.ts",
         "controllers/": "file://C:\/Users\/54594\/Desktop\/deno\/controllers/",
         "oak": "https://deno.land/x/oak/mod.ts",
