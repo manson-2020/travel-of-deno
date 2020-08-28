@@ -1,57 +1,48 @@
-import { RouterContext, helpers } from "oak";
+import { Context } from "oak";
 import { multiParser } from 'multiParser';
 import { Users } from "../models/users.ts";
+import { Controller } from "../lib/controller.ts";
 
-class Index {
-    async index(ctx: any) {
-        ctx.render(`${Deno.cwd()}/views/index.ejs`, { title: "登录" });
+export default new class Index extends Controller {
+    private users = new Users();
+
+    constructor() {
+        super()
     }
 
-    async login(ctx: RouterContext) {
+    index(ctx: Context) {
+        ctx.response.redirect("/login");
+    }
+    renderLogin(ctx: any) {
+        ctx.render(`${Deno.cwd()}/views/index.ejs`, { switched: true });
+    }
+
+    renderRegister(ctx: any) {
+        ctx.render(`${Deno.cwd()}/views/index.ejs`, { switched: false });
+    }
+
+    async login(ctx: Context) {
         const value: any = await multiParser(ctx.request.serverRequest);
-        console.log(await new Users().getData(value));
-    }
 
-    async postData(ctx: RouterContext) {
-        try {
-            const { type, value } = ctx.request.body();
-            ctx.response.body = await (type === "form-data" ? multiParser(ctx.request.serverRequest) : value);
-
-        } catch (e) {
-            ctx.response.body = e;
+        const result = await this.users.verifyIdentity(value)
+        if (result) {
+            ctx.state.session.set("userInfo", result);
+            ctx.response.redirect("/messageBoard");
+            return
         }
+
+        ctx.response.body = "密码或账号错误";
     }
 
-    getParams(ctx: RouterContext) {
-        ctx.response.body = helpers.getQuery(ctx, { mergeParams: true });
-    }
+    async register(ctx: Context) {
+        const value: any = await multiParser(ctx.request.serverRequest);
+        const result = await this.users.addUser(value);
 
-    inputParams(ctx: RouterContext) {
-        const books = new Map();
-        books.set(1, {
-            id: "1",
-            title: "The Hound of the Baskervilles",
-            author: "Conan Doyle, Arthur",
-        });
+        if (result) {
 
-        if (ctx.params && ctx.params.id && books.has(+ctx.params.id)) {
-            ctx.response.body = books.get(+ctx.params.id);
-        } else {
-            ctx.response.body = 404;
+            ctx.response.body = "注册成功";
+            return;
         }
-    }
-    error(ctx: RouterContext) {
-        ctx.throw(500);
-    }
-
-    redirect(ctx: RouterContext) {
-        ctx.response.redirect(`/param`);
-    }
-
-    view(ctx: RouterContext) {
-        // ctx.render("../views/index.ejs", { data: { name: "John" } });
-        ctx.response.body = Deno.readTextFileSync("../views/../views/test.html");
+        ctx.response.body = "注册失败(用户已存在)";
     }
 }
-
-export default new Index;

@@ -4,19 +4,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= title %></title>
+    <title><%= switched ? "Login" : "Register" %></title>
 </head>
 
 <body>
-    <h1>login</h1>
-    <form action="/user/login" enctype="multipart/form-data" method="post">
-        <% ['username', 'password'].forEach(item => { %>
+    <h1><%=  switched ? "Login" : "Register" %></h1>
+    <form action="/<%= switched ? "login" : "register" %>" enctype="multipart/form-data" method="post">
+        <% [{title: 'username', type: "text"}, {title: 'password',type: "password"}].forEach(item => { %>
         <label>
-            <span><%= item %>:</span>
-            <input type="text" name="<%= item %>">
+            <span><%= item.title %>:</span>
+            <input type="<%= item.type %>" name="<%= item.title %>">
         </label>
+        <br />
+        <br />
         <% }) %>
-        <button>提交</button>
+
+        <a href="/<%= switched ? "register" : "login" %>"><%= switched ? "没" : "已" %>有账号，去<%=  switched ? "注册" : "登录" %>
+        </a>
+        <button style="margin-left: 30px;"><%= switched ? "登录" : "注册" %></button>
     </form>
 
 </body>
