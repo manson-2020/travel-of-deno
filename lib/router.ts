@@ -1,5 +1,5 @@
 
-import { Router, Context, send } from "oak";
+import { Router, Context } from "oak";
 
 import index from "controllers/index.ts";
 import messageBoard from "controllers/messageBoard.ts";
