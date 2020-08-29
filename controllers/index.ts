@@ -6,9 +6,9 @@ export default new class Index {
     private users = new Users();
 
     render(ctx: any) {
-        ctx.render(`${Deno.cwd()}/views/index.ejs`, { isLogin: ctx.request.url.pathname === "/login" });
+        ctx.render(`${Deno.cwd()}/views/index.ejs`, { isLogin: ctx.request.url.pathname === "/views/login" });
     }
-    
+
     async login(ctx: Context) {
         const value: any = await multiParser(ctx.request.serverRequest);
 

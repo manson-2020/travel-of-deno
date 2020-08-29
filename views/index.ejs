@@ -9,17 +9,16 @@
 
 <body>
     <h1><%=  isLogin ? "Login" : "Register" %></h1>
-    <form action="/<%= isLogin ? "login" : "register" %>" enctype="multipart/form-data" method="post">
+    <form action="/api/<%= isLogin ? "login" : "register" %>" enctype="multipart/form-data" method="post">
         <% [{title: 'username', type: "text"}, {title: 'password',type: "password"}].forEach(item => { %>
-            <label>
-                <span><%= item.title %>:</span>
-                <input type="<%= item.type %>" name="<%= item.title %>">
-            </label>
-            <br />
-            <br />
+        <label>
+            <span><%= item.title %>:</span>
+            <input type="<%= item.type %>" name="<%= item.title %>">
+        </label>
+        <br />
+        <br />
         <% }) %>
-
-        <a href="/<%= isLogin ? "register" : "login" %>">
+        <a href="/views/<%= isLogin ? "register" : "login" %>">
             <%= isLogin ? "没" : "已" %>有账号，去<%=  isLogin ? "注册" : "登录" %>
         </a>
         <button style="margin-left: 30px;"><%= isLogin ? "登录" : "注册" %></button>
