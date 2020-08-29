@@ -45,8 +45,8 @@ app.addEventListener("listen", ({ hostname, port, secure }) => {
 
 app.addEventListener("error", (evt) => {
     console.log(evt.error);
-    const { getFullYear, getMonth, getDay }: Date = new Date();
-    const path: string = `${Deno.cwd()}/logs/${getFullYear()}-${getMonth() + 1}-${getDay()}.txt`;
+    const date: Date = new Date();
+    const path: string = `${Deno.cwd()}/logs/${date.getFullYear()}-${date.getMonth() + 1}-${date.getDay()}.txt`;
     Deno.writeTextFile(path, evt.error + "\n", { append: true });
 });
 
