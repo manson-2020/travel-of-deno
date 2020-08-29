@@ -4,7 +4,7 @@ import Message_board from "../models/Message_board.ts";
 
 export default new class MessageBoard {
     private message_board = new Message_board();
-    async index(ctx: any) {
+    async render(ctx: any) {
         ctx.render(`${Deno.cwd()}/views/messageBoard.ejs`, { title: "留言板", data: await this.message_board.getData() });
     }
     getParams(ctx: Context) {
