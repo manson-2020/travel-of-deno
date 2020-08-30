@@ -22,7 +22,6 @@ app.use(router.allowedMethods());
 app.use(router.routes());
 
 app.use((ctx: Context) => {
-    console.log(ctx)
     ctx.response.status = 404;
     ctx.response.redirect("/views/404");
 });
