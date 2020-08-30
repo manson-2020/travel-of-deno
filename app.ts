@@ -1,5 +1,5 @@
 
-import { Application, Context, send } from "oak";
+import { Application, Context } from "oak";
 import { load } from "denv";
 import { viewEngine, engineFactory, adapterFactory, } from "view_engine";
 import { Session } from "session";
@@ -18,23 +18,11 @@ app.use(session.use()(session));
 
 app.use(viewEngine(oakAdapter, ejsEngine));
 
-app.use(async (ctx: Context, next) => {
-    const [{ pathname }, root] = [ctx.request.url, Deno.cwd() + "/public"];
-    try {
-        await send(ctx, pathname, { root, index: "index.html" });
-    } catch (e) {
-        if (["/api", "/views"].some(item => pathname.indexOf(item) === 0)) {
-            await next();
-            return;
-        }
-        await send(ctx, "/index.html", { root });
-    }
-})
-
 app.use(router.allowedMethods());
 app.use(router.routes());
 
 app.use((ctx: Context) => {
+    console.log(ctx)
     ctx.response.status = 404;
     ctx.response.redirect("/views/404");
 });
@@ -46,7 +34,7 @@ app.addEventListener("listen", ({ hostname, port, secure }) => {
 app.addEventListener("error", (evt) => {
     console.log(evt.error);
     const date: Date = new Date();
-    const path: string = `${Deno.cwd()}/logs/${date.getFullYear()}-${date.getMonth() + 1}-${date.getDay()}.txt`;
+    const path: string = `${Deno.cwd()}/logs/${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}.txt`;
     Deno.writeTextFile(path, evt.error + "\n", { append: true });
 });
 

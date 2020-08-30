@@ -1,10 +1,11 @@
 {
     "imports": {
+        "@/": "/Users/manson/Desktop/travel-of-deno/",
+        "controllers/": "/Users/manson/Desktop/travel-of-deno/app/controllers/",
         "checksum": "https://deno.land/x/checksum@1.2.0/mod.ts",
         "session": "https://raw.githubusercontent.com/denjucks/session/1.1.0/mod.ts",
         "denv": "https://deno.land/x/denv@2.0.0/mod.ts",
         "view_engine": "https://deno.land/x/view_engine@v1.3.0/mod.ts",
-        "controllers/": "/Users/manson/Desktop/travel-of-deno/controllers/",
         "oak": "https://deno.land/x/oak/mod.ts",
         "multiParser": "https://deno.land/x/multiparser@v2.0.1/mod.ts",
         "mongo": "https://deno.land/x/mongo@v0.9.1/mod.ts"

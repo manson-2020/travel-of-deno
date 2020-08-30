@@ -1,5 +1,5 @@
 
-import { db } from "../lib/database.ts";
+import { db } from "@/lib/database.ts";
 import { Hash, encode } from "checksum";
 
 export const users = db.collection("users");

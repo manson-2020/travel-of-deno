@@ -5,13 +5,12 @@ import index from "controllers/index.ts";
 import messageBoard from "controllers/messageBoard.ts";
 
 const router: Router = new Router();
-
 router.use(async ({ request, response, state }: Context, next) => {
     response.headers.set("Access-Control-Allow-Origin", "*");
     response.headers.set("Access-Control-Allow-Methods", "*");
     response.headers.set("Access-Control-Allow-Headers", "*");
 
-    const ignoreRoutes: Array<string> = ["/views/login", "/views/register", "/api/login", "/api/register", "views/404"]
+    const ignoreRoutes: Array<string> = ["/views/login", "/views/register", "/api/login", "/api/register", "/views/404"]
     if (await state.session.get("userInfo") || ignoreRoutes.includes(request.url.pathname)) {
         await next();
         return;
@@ -19,12 +18,15 @@ router.use(async ({ request, response, state }: Context, next) => {
     response.redirect("/views/login");
 })
 
+// router.prefix("");
 router.get("/views/login", index.render);
-router.get("/views/404", (ctx: any) => ctx.render(`${Deno.cwd()}/views/404.ejs`));
+router.get("/views/404", (ctx: any) => ctx.render(`${Deno.cwd()}/app/views/404.ejs`));
 router.get("/views/register", index.render);
 router.get("/views/messageBoard", messageBoard.render.bind(messageBoard));
 
 router.post("/api/login", index.login.bind(index));
 router.post("/api/register", index.register.bind(index));
+
+
 
 export default router;

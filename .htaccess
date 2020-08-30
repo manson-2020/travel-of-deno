@@ -1,0 +1,15 @@
+server {
+    listen       9090;
+    server_name  localhost;
+    error_page   500 502 503 504  /50x.html;
+
+    location / {
+        root /Users/manson/Desktop/travel-of-deno/public; 
+        index index.html;
+        expires    7d;
+    }
+
+    location ~ ^\/(api|views) {
+        proxy_pass  http://127.0.0.1:8000;
+    }
+}

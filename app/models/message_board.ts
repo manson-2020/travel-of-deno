@@ -1,5 +1,5 @@
 
-import { db } from "../lib/database.ts";
+import { db } from "@/lib/database.ts";
 
 export const messageBoard = db.collection("messageBoard");
 
