@@ -1,8 +1,8 @@
 
 import { Router, Context } from "oak";
 
-import index from "controllers/index.ts";
-import messageBoard from "controllers/messageBoard.ts";
+import index from "@/app/controllers/index.ts";
+import messageBoard from "@/app/controllers/messageBoard.ts";
 
 const router: Router = new Router();
 

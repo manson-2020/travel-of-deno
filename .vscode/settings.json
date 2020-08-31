@@ -3,6 +3,7 @@
   "deno.enable": true,
   "cSpell.ignoreWords": [
     "baskervilles",
+    "denon",
     "denv"
   ],
 }

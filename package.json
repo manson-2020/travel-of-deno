@@ -1,7 +1,9 @@
 {
+    "scripts": {
+        "start": "denon run --allow-read --allow-net --allow-write --allow-plugin --allow-env --unstable --importmap=package.json app.ts"
+    },
     "imports": {
-        "@/": "/Users/manson/Desktop/travel-of-deno/",
-        "controllers/": "/Users/manson/Desktop/travel-of-deno/app/controllers/",
+        "@/": "/Users/54594/Desktop/travel-of-deno/",
         "checksum": "https://deno.land/x/checksum@1.2.0/mod.ts",
         "session": "https://raw.githubusercontent.com/denjucks/session/1.1.0/mod.ts",
         "denv": "https://deno.land/x/denv@2.0.0/mod.ts",

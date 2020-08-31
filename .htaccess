@@ -4,12 +4,16 @@ server {
     error_page   500 502 503 504  /50x.html;
 
     location / {
-        root /Users/manson/Desktop/travel-of-deno/public; 
+        # root /Users/5459/Desktop/travel-of-deno/public; 
+        root C:\\Users\\54594\\Desktop\\travel-of-deno\\public; 
         index index.html;
         expires    7d;
     }
 
     location ~ ^\/(api|views) {
         proxy_pass  http://127.0.0.1:8000;
+        proxy_set_header Connection "keep-alive";
+        proxy_set_header X-Real-IP $remote_addr;   
+        proxy_set_header Host  $http_host;
     }
 }
