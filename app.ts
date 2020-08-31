@@ -37,4 +37,4 @@ app.addEventListener("error", (evt) => {
     Deno.writeTextFile(path, evt.error + "\n", { append: true });
 });
 
-await app.listen({ port: 8000, hostname: "::" });
+await app.listen({ port: 8000 });
